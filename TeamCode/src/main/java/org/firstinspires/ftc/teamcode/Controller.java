@@ -270,11 +270,11 @@ public class Controller extends OpMode {
 
 
         if (gamepad1.dpad_left || gamepad2.dpad_left) {
-            susanWheel.setPower(1.0);
+            susanWheel.setPower(.6);
             susanPower = 1.0;
             telemetry.addData("Status", "dpad left");
         } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-            susanWheel.setPower(-1.0);
+            susanWheel.setPower(-.6);
             telemetry.addData("Status", "bumper right");
         } else {
             susanWheel.setPower(0);
@@ -330,14 +330,12 @@ public class Controller extends OpMode {
             armLevel--;
         }
         //armSlide.setPower(100);
-        armSlide.setVelocity(500);
+        armSlide.setVelocity(1000);
 
 
             //Gripper Data
 
             if (getRuntime() - previousRunTime >= inputDelayInSeconds + .25 && rumbleLevel) {
-                gamepad1.rumbleBlips(armLevel + 1);
-                gamepad2.rumbleBlips(armLevel + 1);
                 rumbleLevel = false;
             }
             armSlide.setTargetPosition(armLevelPosition[armLevel]);

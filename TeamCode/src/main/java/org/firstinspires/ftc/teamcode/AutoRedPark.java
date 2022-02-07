@@ -21,6 +21,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Autonomous(name = "Auto Red Park", group = "Jackson")
 //@Disabled
 public class AutoRedPark extends OpMode {
+
+    @Override
+    public void start() {
+
+        rotateLeft(5000,1000);
+        //rotateRight(10,5);
+//      travelUntilDistanceAway(-90, .5, sideRightDistanceSensor,50);
+//      travelUntilDistance(0, .65, sideBackDistanceSensor, 15);
+//      travelUntilDistance(90, .5, sideRightDistanceSensor, 30);
+//      lazySusan(500, -2500);
+    }
+
+
     private Rev2mDistanceSensor sideBackDistanceSensor;
     private Rev2mDistanceSensor sideRightDistanceSensor;
 
@@ -51,13 +64,13 @@ public class AutoRedPark extends OpMode {
         sideBackDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
         sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
 
-        wheelFL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        wheelFR.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        wheelBL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        wheelBR.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        susanWheel.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        wheelFL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        wheelFR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        wheelBL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        wheelBR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        susanWheel.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        armSlide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        armSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         armSlide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         armSlide.setTargetPosition(0);
         armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -66,6 +79,13 @@ public class AutoRedPark extends OpMode {
         wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
         wheelBL.setDirection(DcMotorSimple.Direction.FORWARD);
         wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        wheelFL.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
+        wheelFR.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
+        wheelBL.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
+        wheelBR.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
+
+
     }
 
     @Override
@@ -154,8 +174,35 @@ public class AutoRedPark extends OpMode {
             }
         }
     }
+    public void rotateLeft(int power, int target){
+        wheelFL.setTargetPosition(target);
+        wheelFR.setTargetPosition(-target);
+        wheelBL.setTargetPosition(-target);
+        wheelBR.setTargetPosition(target);
+        wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelFR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelBL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelBR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelFL.setVelocity(power);
+        wheelFR.setVelocity(power);
+        wheelBL.setVelocity(power);
+        wheelBR.setVelocity(power);
+    }
 
-
+    public void rotateRight(int power, int target){
+        wheelFL.setTargetPosition(-target);
+        wheelFR.setTargetPosition(target);
+        wheelBL.setTargetPosition(target);
+        wheelBR.setTargetPosition(-target);
+        wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelFR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelBL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelBR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelFL.setVelocity(power);
+        wheelFR.setVelocity(power);
+        wheelBL.setVelocity(power);
+        wheelBR.setVelocity(power);
+    }
     public void lazySusan(int power, int target) {
         susanWheel.setTargetPosition(target);
         susanWheel.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -163,14 +210,7 @@ public class AutoRedPark extends OpMode {
     }
 
 
-    @Override
-    public void start() {
-    travelUntilDistanceAway(-90, .5, sideRightDistanceSensor,50);
-    travelUntilDistance(0, .65, sideBackDistanceSensor, 15);
-    travelUntilDistance(90, .5, sideRightDistanceSensor, 30);
-    lazySusan(500, -2500);
-    //travelUntilDistanceAway(-90, .5, sideRightDistanceSensor,60);
-    }
+
 
     @Override
     public void stop() {
