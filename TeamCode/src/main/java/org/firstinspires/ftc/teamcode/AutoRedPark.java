@@ -25,7 +25,14 @@ public class AutoRedPark extends OpMode {
     @Override
     public void start() {
 
-        rotateLeft(5000,1000);
+        travel(0, 2100, -1050);
+        turn(0, 2100, 850);
+        travel(0, 2100, -1050);
+        turn(0, 2100, 850);
+        travel(0, 2100, -1050);
+        turn(0, 2100, 850);
+        travel(0, 2100, -1050);
+        turn(0, 2100, 850);
         //rotateRight(10,5);
 //      travelUntilDistanceAway(-90, .5, sideRightDistanceSensor,50);
 //      travelUntilDistance(0, .65, sideBackDistanceSensor, 15);
@@ -92,34 +99,59 @@ public class AutoRedPark extends OpMode {
     public void loop() {
 
     }
+    public void travel(int angle, int power, int target){
+        wheelFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+        wheelBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-    public void travel(int angle, int power, int target) {
-        double r = Math.hypot(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle)));
-        double robotAngle = Math.atan2(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle))) - Math.PI / 4;
-        double rightX = 0;
+        wheelFL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelFR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        final double v1 = r * Math.cos(robotAngle) + rightX;
-        final double v2 = r * Math.sin(robotAngle) - rightX;
-        final double v3 = r * Math.sin(robotAngle) + rightX;
-        final double v4 = r * Math.cos(robotAngle) - rightX;
+        //true angle
+        double trueAngle = (angle - 90);
 
-        wheelFL.setTargetPosition(-target);
-        wheelFR.setTargetPosition(-target);
-        wheelBL.setTargetPosition(target);
-        wheelBR.setTargetPosition(target);
+        //number of 45 degree angles from 0 (unit Circle) (in radians)
+        double num45s = Math.toRadians(trueAngle / 45);
+//        if (angle == 0){
+//            num45s = 7;
+//        }
 
+
+        //calculates main angle
+        double r = Math.hypot(Math.cos(Math.toRadians(trueAngle)), Math.sin(Math.toRadians(trueAngle)));
+        double robotAngle = Math.atan2(Math.sin(Math.toRadians(trueAngle)), Math.cos(Math.toRadians(trueAngle))) - ((Math.PI / 4) + ((Math.PI / 4) * num45s));
+
+        //make calculations based upon the input
+        final double v1 = r * Math.cos(robotAngle);
+        final double v2 = r * Math.sin(robotAngle);
+        final double v3 = r * Math.sin(robotAngle);
+        final double v4 = r * Math.cos(robotAngle);
+
+        //sets target position
+        wheelFL.setTargetPosition(v1 > 0 ? target : -1 * target); //v1 > 0 ? target : -1 * target
+        wheelFR.setTargetPosition(v2 > 0 ? target : -1 * target);
+        wheelBL.setTargetPosition(v3 > 0 ? target : -1 * target);
+        wheelBR.setTargetPosition(v4 > 0 ? target : -1 * target);
+
+        // Switch to RUN_TO_POSITION mode
         wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         wheelFR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         wheelBL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         wheelBR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+        //change the power for each wheel
+        //this should make it turn at v1-v4 ticks per second.
 
         wheelFL.setVelocity(v1 * power);
         wheelFR.setVelocity(v2 * power);
         wheelBL.setVelocity(v3 * power);
         wheelBR.setVelocity(v4 * power);
 
-
     }
+
     public void travelUntilDistance(int angle, double power, Rev2mDistanceSensor sensor, int distanceInCm) {
         double r = Math.hypot(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle)));
         double robotAngle = Math.atan2(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle))) - Math.PI / 4;
@@ -174,35 +206,60 @@ public class AutoRedPark extends OpMode {
             }
         }
     }
-    public void rotateLeft(int power, int target){
-        wheelFL.setTargetPosition(target);
-        wheelFR.setTargetPosition(-target);
-        wheelBL.setTargetPosition(-target);
-        wheelBR.setTargetPosition(target);
+    public void turn(int angle, int power, int target) {
+        wheelFL.setDirection(DcMotorSimple.Direction.FORWARD);
+        wheelFR.setDirection(DcMotorSimple.Direction.FORWARD);
+        wheelBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        wheelFL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelFR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        //true angle
+        double trueAngle = (angle - 90);
+
+        //number of 45 degree angles from 0 (unit Circle) (in radians)
+        double num45s = Math.toRadians(trueAngle / 45);
+//        if (angle == 0){
+//            num45s = 7;
+//        }
+
+
+        //calculates main angle
+        double r = Math.hypot(Math.cos(Math.toRadians(trueAngle)), Math.sin(Math.toRadians(trueAngle)));
+        double robotAngle = Math.atan2(Math.sin(Math.toRadians(trueAngle)), Math.cos(Math.toRadians(trueAngle))) - ((Math.PI / 4) + ((Math.PI / 4) * num45s));
+
+        //make calculations based upon the input
+        final double v1 = r * Math.cos(robotAngle);
+        final double v2 = r * Math.sin(robotAngle);
+        final double v3 = r * Math.sin(robotAngle);
+        final double v4 = r * Math.cos(robotAngle);
+
+        //sets target position
+        wheelFL.setTargetPosition(v1 > 0 ? target : -1 * target); //v1 > 0 ? target : -1 * target
+        wheelFR.setTargetPosition(v2 > 0 ? target : -1 * target);
+        wheelBL.setTargetPosition(v3 > 0 ? target : -1 * target);
+        wheelBR.setTargetPosition(v4 > 0 ? target : -1 * target);
+
+        // Switch to RUN_TO_POSITION mode
         wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         wheelFR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         wheelBL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         wheelBR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        wheelFL.setVelocity(power);
-        wheelFR.setVelocity(power);
-        wheelBL.setVelocity(power);
-        wheelBR.setVelocity(power);
+
+        //change the power for each wheel
+        //this should make it turn at v1-v4 ticks per second.
+
+        wheelFL.setVelocity(v1 * power);
+        wheelFR.setVelocity(v2 * power);
+        wheelBL.setVelocity(v3 * power);
+        wheelBR.setVelocity(v4 * power);
+
+
     }
 
-    public void rotateRight(int power, int target){
-        wheelFL.setTargetPosition(-target);
-        wheelFR.setTargetPosition(target);
-        wheelBL.setTargetPosition(target);
-        wheelBR.setTargetPosition(-target);
-        wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        wheelFR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        wheelBL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        wheelBR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        wheelFL.setVelocity(power);
-        wheelFR.setVelocity(power);
-        wheelBL.setVelocity(power);
-        wheelBR.setVelocity(power);
-    }
     public void lazySusan(int power, int target) {
         susanWheel.setTargetPosition(target);
         susanWheel.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);

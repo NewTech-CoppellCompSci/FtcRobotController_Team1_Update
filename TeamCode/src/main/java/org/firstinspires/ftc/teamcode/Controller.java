@@ -271,7 +271,6 @@ public class Controller extends OpMode {
 
         if (gamepad1.dpad_left || gamepad2.dpad_left) {
             susanWheel.setPower(.6);
-            susanPower = 1.0;
             telemetry.addData("Status", "dpad left");
         } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
             susanWheel.setPower(-.6);
