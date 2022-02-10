@@ -251,12 +251,13 @@ public class Controller extends OpMode {
 
         //Lazy Susan
         double susanPower = 0;
-
-        if (gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0) {
+        if (gamepad1.left_trigger > 0) {
+            //removed || gamepad2.left_trigger > 0)
             speedMod = .25;
             gamepad1.rumble(100);
             gamepad2.rumble(100);
-        } else if (gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0) {
+        } else if (gamepad1.right_trigger > 0) {
+            //removed || gamepad2.right_trigger > 0
             speedMod = 0.5;
             gamepad1.rumble(.5, .5, 1000);
             gamepad2.rumble(.5, .5, 1000);
@@ -278,6 +279,9 @@ public class Controller extends OpMode {
         } else {
             susanWheel.setPower(0);
         }
+
+        //new trigger susan wheel
+        susanWheel.setPower(-gamepad2.left_trigger + gamepad2.right_trigger);
 
         //Grabber
 //
@@ -327,10 +331,21 @@ public class Controller extends OpMode {
             rumbleLevel = true;
             previousRunTime = getRuntime();
             armLevel--;
+
+
         }
+        if (gamepad1.y || gamepad2.y) {
+            armLevel=1;
+        }
+        //driving forklift level
+
+
+
         //armSlide.setPower(100);
         armSlide.setVelocity(1000);
-
+        if (armLevel==1) {
+            armSlide.setVelocity(2000);
+        }
 
             //Gripper Data
 
