@@ -64,7 +64,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
     name = the name that will display on the Driver Hub
     group = allows you to group OpModes
  */
-@TeleOp(name="DriverControl", group="Wesley")
+@TeleOp(name="DriverControl_Pressme;)", group="Wesley")
 //@Disabled  This way it will run on the robot
 public class Controller extends OpMode {
     // Declare OpMode members.
@@ -183,7 +183,8 @@ public class Controller extends OpMode {
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized balls");
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Initialized ur moms a hoe lol");
+        telemetry.addData("Status", "Initialized heyyy daddy");
 
     }
 
@@ -345,6 +346,7 @@ public class Controller extends OpMode {
         armSlide.setVelocity(1000);
         if (armLevel==1) {
             armSlide.setVelocity(2000);
+            //if statement to set speed only going down
         }
 
             //Gripper Data
