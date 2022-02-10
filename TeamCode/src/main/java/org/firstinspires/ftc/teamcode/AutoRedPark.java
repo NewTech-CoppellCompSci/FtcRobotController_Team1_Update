@@ -25,14 +25,14 @@ public class AutoRedPark extends OpMode {
     @Override
     public void start() {
 
-        travel(0, 2100, -1050);
+        //travel(0, 2100, -1050);
         turn(0, 2100, 850);
-        travel(0, 2100, -1050);
-        turn(0, 2100, 850);
-        travel(0, 2100, -1050);
-        turn(0, 2100, 850);
-        travel(0, 2100, -1050);
-        turn(0, 2100, 850);
+        //travel(0, 2100, -1050);
+//        turn(0, 2100, 850);
+//        travel(0, 2100, -1050);
+//        turn(0, 2100, 850);
+//        travel(0, 2100, -1050);
+//        turn(0, 2100, 850);
         //rotateRight(10,5);
 //      travelUntilDistanceAway(-90, .5, sideRightDistanceSensor,50);
 //      travelUntilDistance(0, .65, sideBackDistanceSensor, 15);
@@ -111,7 +111,7 @@ public class AutoRedPark extends OpMode {
         wheelBR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         //true angle
-        double trueAngle = (angle - 90);
+        double trueAngle = (angle + 90);
 
         //number of 45 degree angles from 0 (unit Circle) (in radians)
         double num45s = Math.toRadians(trueAngle / 45);
@@ -149,7 +149,12 @@ public class AutoRedPark extends OpMode {
         wheelFR.setVelocity(v2 * power);
         wheelBL.setVelocity(v3 * power);
         wheelBR.setVelocity(v4 * power);
-
+        while(true){
+            wheelBR.isBusy();
+            wheelBL.isBusy();
+            wheelFR.isBusy();
+            wheelFL.isBusy();
+        }
     }
 
     public void travelUntilDistance(int angle, double power, Rev2mDistanceSensor sensor, int distanceInCm) {
@@ -257,6 +262,12 @@ public class AutoRedPark extends OpMode {
         wheelBL.setVelocity(v3 * power);
         wheelBR.setVelocity(v4 * power);
 
+        while(true){
+            wheelBR.isBusy();
+            wheelBL.isBusy();
+            wheelFR.isBusy();
+            wheelFL.isBusy();
+        }
 
     }
 
