@@ -282,7 +282,7 @@ public class Controller extends OpMode {
         }
 
         //new trigger susan wheel
-        susanWheel.setPower(-gamepad2.left_trigger + gamepad2.right_trigger);
+        susanWheel.setPower(-gamepad2.left_trigger + gamepad2.right_trigger ); 
 
         //Grabber
 //
