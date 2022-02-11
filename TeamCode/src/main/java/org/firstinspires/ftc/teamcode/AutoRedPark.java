@@ -34,15 +34,15 @@ public class AutoRedPark extends OpMode {
 //        travel(0, 2100, -1050);
 //        turn(0, 2100, 850);
         //rotateRight(10,5);
-//      travelUntilDistanceAway(-90, .5, sideRightDistanceSensor,50);
-//      travelUntilDistance(0, .65, sideBackDistanceSensor, 15);
-//      travelUntilDistance(90, .5, sideRightDistanceSensor, 30);
+//      travelUntilDistanceAway(-90, .5, rightDistance,50);
+//      travelUntilDistance(0, .65, leftDistance, 15);
+//      travelUntilDistance(90, .5, rightDistance, 30);
 //      lazySusan(500, -2500);
     }
 
+    private Rev2mDistanceSensor leftDistance;
+    private Rev2mDistanceSensor rightDistance;
 
-    private Rev2mDistanceSensor sideBackDistanceSensor;
-    private Rev2mDistanceSensor sideRightDistanceSensor;
 
     private DcMotorEx wheelFL;
     private DcMotorEx wheelFR;
@@ -68,8 +68,8 @@ public class AutoRedPark extends OpMode {
         susanWheel = hardwareMap.get(DcMotorEx.class, "susanWheel");
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
 
-        sideBackDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
-        sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
+        leftDistance = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
+        rightDistance = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
 
         wheelFL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         wheelFR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);

@@ -105,14 +105,14 @@ public class AUTO_Barcode extends LinearOpMode {
         initVuforia();
         initTfod();
 
-        wheelFL = hardwareMap.get(DcMotorEx.class, "left_fwd_drive");
-        wheelFR = hardwareMap.get(DcMotorEx.class, "right_fwd_drive");
-        wheelBL = hardwareMap.get(DcMotorEx.class, "left_back_drive");
-        wheelBR = hardwareMap.get(DcMotorEx.class, "right_back_drive");
+        wheelFL = hardwareMap.get(DcMotorEx.class, "wheelFL");
+        wheelFR = hardwareMap.get(DcMotorEx.class, "wheelFR");
+        wheelBL = hardwareMap.get(DcMotorEx.class, "wheelBL");
+        wheelBR = hardwareMap.get(DcMotorEx.class, "wheelBR");
         susanWheel = hardwareMap.get(DcMotorEx.class, "susanWheel");
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
-        intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeWheelLeft");
-        intakeRight = hardwareMap.get(DcMotorEx.class, "intakeWheelRight");
+        intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeLeft");
+        intakeRight = hardwareMap.get(DcMotorEx.class, "intakeRight");
 
 
         // Send telemetry message to signify robot waiting;
@@ -159,30 +159,42 @@ public class AUTO_Barcode extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        if (opModeIsActive()) {
-            if(getPosition()=="Left"){ //if duck is on the left barcode
-               //armLevel = 1;
-            }
-            else if(getPosition() == "Right"){ //if duck is on the right barcode
-                //armLevel = 2;
-            }
-            else{ // if the duck is on the barcode that the camera doesn't see
-                //armLevel = 3;
-            }
-           // armSlide.setTargetPosition(armLevelPosition[armLevel]);
-           // armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
-            //encoderdrive stuff goes here
-            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-//paste outtake
-        }
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        String duckLocation = "Error";
 
-       // robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
-       // robot.rightClaw.setPosition(0.0);//not needed
-        //sleep(1000);     // pause for servos to move
+        while (opModeIsActive()) {
+            if (getPosition() == "Left") { //if duck is on the left barcode
+                //armLevel = 1;
+                duckLocation = "Left";
+            } else if (getPosition() == "Right") { //if duck is on the right barcode
+                //armLevel = 2;
+                duckLocation = "Right";
+            } else { // if the duck is on the barcode that the camera doesn't see
+                //armLevel = 3;
+                duckLocation = "Hidden";
+            }
+            telemetry.addData("Duck at: ", duckLocation);
+            telemetry.update();
+
+
+//            armSlide.setTargetPosition(armLevelPosition[armLevel]);
+//            armSlide.setTargetPositionTolerance(armLevelPosition[ar mLevel]);
+
+            //encoderdrive stuff goes here
+//            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+//            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+//            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//paste outtake
+
+            // Step through each leg of the path,
+            // Note: Reverse movement is obtained by setting a negative distance (not speed)
+
+//        robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
+//        robot.rightClaw.setPosition(0.0);//not needed
+            //sleep(1000);     // pause for servos to move
+
+
+        }
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
