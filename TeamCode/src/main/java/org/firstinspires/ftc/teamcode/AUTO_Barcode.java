@@ -29,7 +29,7 @@ package org.firstinspires.ftc.teamcode;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
+@Autonomous(name = "red barcode recognize", group = "Concept")
 //@Disabled
 public class AUTO_Barcode extends LinearOpMode {
     /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
@@ -169,8 +169,8 @@ public class AUTO_Barcode extends LinearOpMode {
             else{ // if the duck is on the barcode that the camera doesn't see
                 //armLevel = 3;
             }
-            armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+           // armSlide.setTargetPosition(armLevelPosition[armLevel]);
+           // armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
             //encoderdrive stuff goes here
             encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
             encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
