@@ -169,8 +169,8 @@ public class AUTO_Barcode extends LinearOpMode {
             else{ // if the duck is on the barcode that the camera doesn't see
                 //armLevel = 3;
             }
-            armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+            //armSlide.setTargetPosition(armLevelPosition[armLevel]);
+            //armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
             //encoderdrive stuff goes here
             encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
             encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout

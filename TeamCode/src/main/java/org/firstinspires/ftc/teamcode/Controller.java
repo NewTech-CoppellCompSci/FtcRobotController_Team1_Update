@@ -120,14 +120,14 @@ public class Controller extends OpMode {
         // step (using the FTC Robot Controller app on the phone).
 
         //Motors
-        wheelFL = hardwareMap.get(DcMotorEx.class, "left_fwd_drive");
-        wheelFR = hardwareMap.get(DcMotorEx.class, "right_fwd_drive");
-        wheelBL = hardwareMap.get(DcMotorEx.class, "left_back_drive");
-        wheelBR = hardwareMap.get(DcMotorEx.class, "right_back_drive");
+        wheelFL = hardwareMap.get(DcMotorEx.class, "wheelFL");
+        wheelFR = hardwareMap.get(DcMotorEx.class, "wheelFR");
+        wheelBL = hardwareMap.get(DcMotorEx.class, "wheelBL");
+        wheelBR = hardwareMap.get(DcMotorEx.class, "wheelBR");
         susanWheel = hardwareMap.get(DcMotorEx.class, "susanWheel");
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
-        intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeWheelLeft");
-        intakeRight = hardwareMap.get(DcMotorEx.class, "intakeWheelRight");
+        intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeLeft");
+        intakeRight = hardwareMap.get(DcMotorEx.class, " intakeRight");
 
         //Touch Sensors
         //intakeSensor = hardwareMap.get(DigitalChannel.class, "intakeTouchSensor");
@@ -139,8 +139,8 @@ public class Controller extends OpMode {
         //Servos
         //gripper = hardwareMap.get(Servo.class, "gripperServo");
 
-        sideLeftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
-        sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
+       // sideLeftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
+        //sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
         /*
             Set up motors so they run without the encoders
             This way they run freely.  They won't go to a specific position or count the number of rotations

@@ -1,16 +1,12 @@
-<<<<<<< Updated upstream
-#Wed Feb 09 18:02:35 CST 2022
-=======
-#Thu Feb 10 18:19:08 CST 2022
->>>>>>> Stashed changes
+#Fri Feb 11 14:53:34 CST 2022
 path.3=classes_0.dex
 path.2=classes2.dex
 path.1=classes.dex
 path.0=classes.dex
-base.3=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/classes_0.dex
-base.2=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
-base.1=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex
-base.0=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.3=/Users/offline/Documents/GitHub/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/classes_0.dex
+base.2=/Users/offline/Documents/GitHub/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+base.1=/Users/offline/Documents/GitHub/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex
+base.0=/Users/offline/Documents/GitHub/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
