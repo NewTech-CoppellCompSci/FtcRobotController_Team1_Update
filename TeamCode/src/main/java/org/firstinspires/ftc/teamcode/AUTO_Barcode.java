@@ -105,14 +105,14 @@ public class AUTO_Barcode extends LinearOpMode {
         initVuforia();
         initTfod();
 
-        wheelFL = hardwareMap.get(DcMotorEx.class, "left_fwd_drive");
-        wheelFR = hardwareMap.get(DcMotorEx.class, "right_fwd_drive");
-        wheelBL = hardwareMap.get(DcMotorEx.class, "left_back_drive");
-        wheelBR = hardwareMap.get(DcMotorEx.class, "right_back_drive");
+        wheelFL = hardwareMap.get(DcMotorEx.class, "wheelFL");
+        wheelFR = hardwareMap.get(DcMotorEx.class, "wheelFR");
+        wheelBL = hardwareMap.get(DcMotorEx.class, "wheelBL");
+        wheelBR = hardwareMap.get(DcMotorEx.class, "wheelBR");
         susanWheel = hardwareMap.get(DcMotorEx.class, "susanWheel");
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
-        intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeWheelLeft");
-        intakeRight = hardwareMap.get(DcMotorEx.class, "intakeWheelRight");
+        intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeLeft");
+        intakeRight = hardwareMap.get(DcMotorEx.class, "intakeRight");
 
 
         // Send telemetry message to signify robot waiting;
