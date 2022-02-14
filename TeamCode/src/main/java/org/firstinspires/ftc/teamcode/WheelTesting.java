@@ -83,10 +83,10 @@ public class WheelTesting extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        wheelFL  = hardwareMap.get(DcMotorEx.class, "left_fwd_drive");
-        wheelFR  = hardwareMap.get(DcMotorEx.class, "right_fwd_drive");
-        wheelBL  = hardwareMap.get(DcMotorEx.class, "left_back_drive");
-        wheelBR  = hardwareMap.get(DcMotorEx.class, "right_back_drive");
+        wheelFL  = hardwareMap.get(DcMotorEx.class, "wheelFL");
+        wheelFR  = hardwareMap.get(DcMotorEx.class, "wheelFR");
+        wheelBL  = hardwareMap.get(DcMotorEx.class, "wheelBL");
+        wheelBR  = hardwareMap.get(DcMotorEx.class, "wheelBR");
 
         /*
             Set up motors so they run without the encoders

@@ -36,14 +36,14 @@ public class DuckSpinPark extends OpMode{
 
     @Override
     public void init(){
-        wheelFL  = hardwareMap.get(DcMotorEx.class, "left_fwd_drive");
-        wheelFR  = hardwareMap.get(DcMotorEx.class, "right_fwd_drive");
-        wheelBL  = hardwareMap.get(DcMotorEx.class, "left_back_drive");
-        wheelBR  = hardwareMap.get(DcMotorEx.class, "right_back_drive");
+        wheelFL  = hardwareMap.get(DcMotorEx.class, "wheelFL");
+        wheelFR  = hardwareMap.get(DcMotorEx.class, "wheelFR");
+        wheelBL  = hardwareMap.get(DcMotorEx.class, "wheelBL");
+        wheelBR  = hardwareMap.get(DcMotorEx.class, "wheelBR");
         susanWheel = hardwareMap.get(DcMotorEx.class, "susanWheel");
         armSlide  = hardwareMap.get(DcMotorEx.class, "armSlide");
-        gripper = hardwareMap.get(Servo.class,"gripperServo");
-
+        //gripper = hardwareMap.get(Servo.class,"gripperServo");
+//not used anymore
         backDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceBack");
         sideDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSide");
 
