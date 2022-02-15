@@ -279,8 +279,8 @@ public class Controller extends OpMode {
             telemetry.addData("Status", "bumper right");
         } else {
             //susanWheel.setPower(0);  //disabled to stop conteractingg
-            susanWheel.setPower(-gamepad2.left_trigger + gamepad2.right_trigger );
-            gamepad2.rumble(.5, .5, 1000);
+
+
 
         }
 //  susanWheel.setVelocity((-gamepad2.left_trigger + gamepad2.right_trigger)*2000 );
@@ -297,10 +297,10 @@ public class Controller extends OpMode {
         //gamepad2.rumble(1000);
         // }
         // else{
-        if (gamepad2.left_bumper) {
+        if (gamepad2.left_bumper|| gamepad1.left_bumper) {
             intakeLeft.setPower(1);
             intakeRight.setPower(1);
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.right_bumper|| gamepad1.right_bumper) {
             intakeLeft.setPower(-1);
             intakeRight.setPower(-1);
         } else {

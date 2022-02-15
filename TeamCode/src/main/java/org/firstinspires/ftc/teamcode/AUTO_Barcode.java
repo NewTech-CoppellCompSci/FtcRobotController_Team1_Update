@@ -161,13 +161,13 @@ public class AUTO_Barcode extends LinearOpMode {
 
         if (opModeIsActive()) {
             if(getPosition()=="Left"){ //if duck is on the left barcode
-               //armLevel = 1;
+               armLevel = 1;
             }
             else if(getPosition() == "Right"){ //if duck is on the right barcode
-                //armLevel = 2;
+                armLevel = 2;
             }
             else{ // if the duck is on the barcode that the camera doesn't see
-                //armLevel = 3;
+                armLevel = 3;
             }
             //armSlide.setTargetPosition(armLevelPosition[armLevel]);
             //armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
@@ -258,8 +258,8 @@ public class AUTO_Barcode extends LinearOpMode {
             //        wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = wheelFL.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = wheelFR.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newLeftTarget = wheelFL.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
+            newRightTarget = wheelFR.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
             wheelFL.setTargetPosition(newLeftTarget);
             wheelFR.setTargetPosition(newRightTarget);
             wheelBL.setTargetPosition(newLeftTarget);
@@ -289,11 +289,11 @@ public class AUTO_Barcode extends LinearOpMode {
                     (wheelFL.isBusy() && wheelFR.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
+                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d",
                         wheelFL.getCurrentPosition(),
                         wheelFR.getCurrentPosition(),
-                         wheelBL.getCurrentPosition(),
+                        wheelBL.getCurrentPosition(),
                         wheelBR.getCurrentPosition());
                 telemetry.update();
             }
@@ -309,6 +309,36 @@ public class AUTO_Barcode extends LinearOpMode {
             wheelFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wheelBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+            armSlide.setTargetPosition(armLevelPosition[armLevel]);
+            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+
+
+            //Arm Slide Data
+            telemetry.addData("velocity", armSlide.getVelocity());
+            telemetry.addData("slidePosition", armSlide.getCurrentPosition());
+            telemetry.addData("is at target", !armSlide.isBusy());
+            //Arm Slide Data
+            telemetry.addData("Target Slide Position", armLevelPosition[armLevel]);
+            telemetry.addData("Slide Position", armSlide.getCurrentPosition());
+            telemetry.addData("Velocity", armSlide.getVelocity());
+            telemetry.addData("is at target", !armSlide.isBusy());
+            telemetry.addData("Tolerance: ", armSlide.getTargetPositionTolerance());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //  sleep(250);   // optional pause after each move
         }
