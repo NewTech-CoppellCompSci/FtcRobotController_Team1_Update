@@ -60,6 +60,8 @@ public class AUTO_Barcode extends LinearOpMode {
     private DcMotorEx intakeRight;
 
     private ElapsedTime runtime = new ElapsedTime();
+    private int[] armLevelPosition = {0, 260, 650, 995};
+    private int armLevel;
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
@@ -309,6 +311,7 @@ public class AUTO_Barcode extends LinearOpMode {
             wheelFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wheelBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 
             armSlide.setTargetPosition(armLevelPosition[armLevel]);
