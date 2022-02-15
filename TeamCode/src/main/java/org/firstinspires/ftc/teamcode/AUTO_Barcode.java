@@ -153,7 +153,7 @@ public class AUTO_Barcode extends LinearOpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
+            tfod.setZoom(1, 16.0/9.0);
         }
 
         /** Wait for the game to begin */
@@ -162,17 +162,26 @@ public class AUTO_Barcode extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            if(getPosition()=="Left"){ //if duck is on the left barcode
-               armLevel = 1;
+            if(getPosition()=="Left") { //if duck is on the left barcode
+                armLevel = 1;
+
+
             }
             else if(getPosition() == "Right"){ //if duck is on the right barcode
                 armLevel = 2;
             }
             else{ // if the duck is on the barcode that the camera doesn't see
                 armLevel = 3;
+
+
             }
-            //armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            //armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+            armSlide.setTargetPosition(armLevelPosition[armLevel]);
+            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+            while (armSlide.getCurrentPosition() == armLevelPosition[armLevel])
+            {
+                armSlide.setVelocity(1500);
+            }
+
             //encoderdrive stuff goes here
             encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
             encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
@@ -185,7 +194,7 @@ public class AUTO_Barcode extends LinearOpMode {
        // robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
        // robot.rightClaw.setPosition(0.0);//not needed
         //sleep(1000);     // pause for servos to move
-
+armLevel = 0;
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
