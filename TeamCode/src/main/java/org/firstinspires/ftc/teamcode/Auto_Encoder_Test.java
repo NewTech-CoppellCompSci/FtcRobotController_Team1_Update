@@ -99,7 +99,7 @@ public class Auto_Encoder_Test extends LinearOpMode
             See Documentation for other encoder modes
             https://docs.revrobotics.com/rev-control-system/programming/using-encoder-feedback
          */
-        wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelFL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         wheelFR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         wheelBL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         wheelBR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -111,10 +111,10 @@ public class Auto_Encoder_Test extends LinearOpMode
         wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //Set Encoder Tolerance
-        wheelFL.setDirection(DcMotorSimple.Direction.REVERSE);
-        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        wheelBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelFL.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelBL.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //set PIDFCoefficients
         wheelFL.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
