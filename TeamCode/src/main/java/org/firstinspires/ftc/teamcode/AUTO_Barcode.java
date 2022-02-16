@@ -10,6 +10,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
         import com.qualcomm.robotcore.hardware.DcMotor;
         import com.qualcomm.robotcore.hardware.DcMotorEx;
+        import com.qualcomm.robotcore.hardware.DcMotorSimple;
         import com.qualcomm.robotcore.util.ElapsedTime;
 
         import java.util.List;
@@ -153,7 +154,7 @@ public class AUTO_Barcode extends LinearOpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1, 16.0/9.0);
+            tfod.setZoom(1.5, 16.0/9.0);
         }
 
         /** Wait for the game to begin */
@@ -176,10 +177,12 @@ public class AUTO_Barcode extends LinearOpMode {
 
             }
             armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
-            while (armSlide.getCurrentPosition() == armLevelPosition[armLevel])
+            armSlide.setPower(0.7);
+            armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            while (armSlide.getCurrentPosition() == armLevelPosition[armLevel])
+            while (Math.abs(armLevelPosition[armLevel]-armSlide.getCurrentPosition())>20&&opModeIsActive())
             {
-                armSlide.setVelocity(1500);
+//                armSlide.setVelocity(1500); //removed because
             }
 
             //encoderdrive stuff goes here
@@ -187,6 +190,21 @@ public class AUTO_Barcode extends LinearOpMode {
             encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
             encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
+            intakeLeft.setPower(-1);
+            intakeRight.setPower(-1);
+            sleep(2000);
+            intakeLeft.setPower(0);
+            intakeRight.setPower(0);
+
+            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+
+
+
+///
 
 //paste outtake
         }

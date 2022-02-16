@@ -272,12 +272,13 @@ public class Controller extends OpMode {
 
 
         if (gamepad1.dpad_left || gamepad2.dpad_left) {
-            susanWheel.setVelocity(2000);
+            susanWheel.setVelocity(400);
             telemetry.addData("Status", "dpad left");
         } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-            susanWheel.setVelocity(-2000);
+            susanWheel.setVelocity(-400);
             telemetry.addData("Status", "bumper right");
         } else {
+            susanWheel.setVelocity(0);
             //susanWheel.setPower(0);  //disabled to stop conteractingg
 
 
