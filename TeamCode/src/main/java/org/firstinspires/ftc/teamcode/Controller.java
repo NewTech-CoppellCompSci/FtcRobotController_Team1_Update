@@ -227,88 +227,12 @@ public class Controller extends OpMode {
     @Override
     public void loop() {
 
+        precisionControl();
+        drivingControl();
+        intakeControl();
+        susanControl();
+        forkliftControl();
 
-        //Mecanum Wheels Code
-        //https://ftccats.github.io/software/ProgrammingMecanumWheels.html
-
-        //Get game controller input
-
-        double r = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
-
-        //make calculations based upon the input
-        double robotAngle = Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
-        double rightX = -gamepad1.right_stick_x;
-        rotation += 1 * rightX;
-        final double v1 = r * Math.cos(robotAngle) - rightX;
-        final double v2 = r * Math.sin(robotAngle) + rightX;
-        final double v3 = r * Math.sin(robotAngle) - rightX;
-        final double v4 = r * Math.cos(robotAngle) + rightX;
-
-        //change the power for each wheel
-        wheelFL.setPower(-v1 * speedMod);
-        wheelFR.setPower(-v2 * speedMod);
-        wheelBL.setPower(v3 * speedMod);
-        wheelBR.setPower(v4 * speedMod);
-
-        //Lazy Susan
-        double susanPower = 0;
-        if (gamepad1.left_trigger > 0) {
-            //removed || gamepad2.left_trigger > 0)
-            speedMod = .25;
-            gamepad1.rumble(100);
-            gamepad2.rumble(100);
-        } else if (gamepad1.right_trigger > 0) {
-            //removed || gamepad2.right_trigger > 0
-            speedMod = 0.5;
-            gamepad1.rumble(.5, .5, 1000);
-            gamepad2.rumble(.5, .5, 1000);
-
-        } else {
-            speedMod = 1;
-//            gamepad1.stopRumble();
-//            gamepad2.stopRumble();
-
-        }
-
-
-        if (gamepad1.dpad_left || gamepad2.dpad_left) {
-            susanWheel.setVelocity(400);
-            telemetry.addData("Status", "dpad left");
-        } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-            susanWheel.setVelocity(-400);
-            telemetry.addData("Status", "bumper right");
-        } else {
-            susanWheel.setVelocity(0);
-            //susanWheel.setPower(0);  //disabled to stop conteractingg
-
-
-
-        }
-//  susanWheel.setVelocity((-gamepad2.left_trigger + gamepad2.right_trigger)*2000 );
-        //new trigger susan wheel
-
-
-        //Grabber
-//
-
-        //Intake Wheels
-        // if (intakeSensor.getState()) {
-        intakeLeft.setPower(0);
-        intakeRight.setPower(0);
-        //gamepad2.rumble(1000);
-        // }
-        // else{
-        if (gamepad2.left_bumper|| gamepad1.left_bumper) {
-            intakeLeft.setPower(1);
-            intakeRight.setPower(1);
-        } else if (gamepad2.right_bumper|| gamepad1.right_bumper) {
-            intakeLeft.setPower(-1);
-            intakeRight.setPower(-1);
-        } else {
-            intakeLeft.setPower(0);
-            intakeRight.setPower(0);
-        }
-        //  }
 
         /*
         Arm Slide/Elevator
@@ -327,40 +251,11 @@ public class Controller extends OpMode {
 //            armSlide.setTargetPosition(armLevelPosition[0]);
 //            armSlide.setVelocity(650);
 //        }
-        if ((gamepad1.dpad_up || gamepad2.dpad_up) && (armLevel < armLevelPosition.length - 1) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
-            rumbleLevel = true;
-            previousRunTime = getRuntime();
-            armLevel++;
-        }
-        if ((gamepad1.dpad_down || gamepad2.dpad_down) && (armLevel > 0) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
-            rumbleLevel = true;
-            previousRunTime = getRuntime();
-            armLevel--;
 
-
-
-        }
-        if (gamepad1.y || gamepad2.y) {
-            armLevel=1;
-        }
-        //driving forklift level
-
-
-
-        //armSlide.setPower(100);
-        armSlide.setVelocity(1000);
-        if (armLevel==1) {
-            armSlide.setVelocity(2000);
-            //if statement to set speed only going down
-        }
 
             //Gripper Data
 
-            if (getRuntime() - previousRunTime >= inputDelayInSeconds + .25 && rumbleLevel) {
-                rumbleLevel = false;
-            }
-            armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+
 
 
             telemetry.addData("Left Trigger Position", gamepad1.left_trigger);
@@ -387,6 +282,116 @@ public class Controller extends OpMode {
             telemetry.update();
         }
 
+
+        public void precisionControl(){
+            if (gamepad1.left_trigger > 0) {
+                //removed || gamepad2.left_trigger > 0)
+                speedMod = .25;
+                gamepad1.rumble(100);
+                gamepad2.rumble(100);
+            } else if (gamepad1.right_trigger > 0) {
+                //removed || gamepad2.right_trigger > 0
+                speedMod = 0.5;
+                gamepad1.rumble(.5, .5, 1000);
+                gamepad2.rumble(.5, .5, 1000);
+
+            } else {
+                speedMod = 1;
+//            gamepad1.stopRumble();
+//            gamepad2.stopRumble();
+
+            }
+        }
+
+        public void drivingControl(){
+            //gets controller input
+            double r = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
+
+            //make calculations based upon the input
+            double robotAngle = Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+            double rightX = -gamepad1.right_stick_x;
+            rotation += 1 * rightX;
+            final double v1 = r * Math.cos(robotAngle) - rightX;
+            final double v2 = r * Math.sin(robotAngle) + rightX;
+            final double v3 = r * Math.sin(robotAngle) - rightX;
+            final double v4 = r * Math.cos(robotAngle) + rightX;
+
+            //change the power for each wheel
+            wheelFL.setPower(-v1 * speedMod);
+            wheelFR.setPower(-v2 * speedMod);
+            wheelBL.setPower(v3 * speedMod);
+            wheelBR.setPower(v4 * speedMod);
+        }
+
+        public void intakeControl(){
+            // if (intakeSensor.getState()) {
+            intakeLeft.setPower(0);
+            intakeRight.setPower(0);
+            //gamepad2.rumble(1000);
+            // }
+            // else{
+            if (gamepad2.left_bumper|| gamepad1.left_bumper) {
+                intakeLeft.setPower(1);
+                intakeRight.setPower(1);
+            } else if (gamepad2.right_bumper|| gamepad1.right_bumper) {
+                intakeLeft.setPower(-1);
+                intakeRight.setPower(-1);
+            } else {
+                intakeLeft.setPower(0);
+                intakeRight.setPower(0);
+            }
+        }
+
+        private void susanControl() {
+            if (gamepad1.dpad_left || gamepad2.dpad_left) {
+                susanWheel.setVelocity(400);
+                telemetry.addData("Status", "dpad left");
+            } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
+                susanWheel.setVelocity(-400);
+                telemetry.addData("Status", "bumper right");
+            } else {
+                susanWheel.setVelocity(0);
+                //susanWheel.setPower(0);  //disabled to stop conteractingg
+
+
+
+            }
+        }
+
+        private void forkliftControl(){
+
+            if ((gamepad1.dpad_up || gamepad2.dpad_up) && (armLevel < armLevelPosition.length - 1) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
+                rumbleLevel = true;
+                previousRunTime = getRuntime();
+                armLevel++;
+            }
+            if ((gamepad1.dpad_down || gamepad2.dpad_down) && (armLevel > 0) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
+                rumbleLevel = true;
+                previousRunTime = getRuntime();
+                armLevel--;
+
+
+
+            }
+
+            //sets to driving level
+            if (gamepad1.y || gamepad2.y) {
+                armLevel=1;
+            }
+
+            armSlide.setVelocity(1000);
+            if (armLevel==1) {
+                armSlide.setVelocity(2000);
+                //if statement to set speed only going down
+            }
+
+            if (getRuntime() - previousRunTime >= inputDelayInSeconds + .25 && rumbleLevel) {
+                rumbleLevel = false;
+            }
+            armSlide.setTargetPosition(armLevelPosition[armLevel]);
+            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+            
+        }
 
         /*
          * Code to run ONCE after the driver hits STOP
