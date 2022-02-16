@@ -166,7 +166,7 @@ public class Auto_Encoder_Test extends LinearOpMode
      */
     public void drive(double leftX, double leftY, double rightX, int tics, String routDescription){
 
-        //switch x and y
+        //switch x and y since the robot is sideways
         double temp = leftX;
         leftX = leftY;
         leftY = temp;
