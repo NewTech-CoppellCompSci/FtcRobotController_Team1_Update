@@ -1,13 +1,22 @@
-#Fri Feb 11 17:54:52 CST 2022
-path.3=classes_0.dex
-path.2=classes2.dex
-path.1=classes.dex
+#Tue Feb 15 12:58:23 CST 2022
+path.4=0/classes.dex
+path.3=8/classes.dex
+path.2=11/classes.dex
+path.1=10/classes.dex
+path.6=classes2.dex
+path.5=15/classes.dex
 path.0=classes.dex
-base.3=/Users/rhunter/Documents/FTC Repositories/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/classes_0.dex
-base.2=/Users/rhunter/Documents/FTC Repositories/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
-base.1=/Users/rhunter/Documents/FTC Repositories/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex
-base.0=/Users/rhunter/Documents/FTC Repositories/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.4=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.3=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/8/classes.dex
+base.2=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
+base.1=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/10/classes.dex
+base.0=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
+renamed.6=classes7.dex
+renamed.5=classes6.dex
+base.6=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+renamed.4=classes5.dex
+base.5=/Users/sck3481/Documents/Github/FtcRobotController_Team1_Update/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/15/classes.dex
