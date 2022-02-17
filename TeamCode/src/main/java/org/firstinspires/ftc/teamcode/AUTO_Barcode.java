@@ -66,7 +66,7 @@ public class AUTO_Barcode extends LinearOpMode {
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference // change
+    static final double     WHEEL_DIAMETER_INCHES   = 3.78 ;     // For figuring circumference // change
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
@@ -163,16 +163,16 @@ public class AUTO_Barcode extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            if(getPosition()=="Left") { //if duck is on the left barcode
-                armLevel = 1;
+            if(getPosition()=="right") { //if duck is on the left barcode
+                armLevel = 3;
 
 
             }
-            else if(getPosition() == "Right"){ //if duck is on the right barcode
+            else if(getPosition() == "left"){ //if duck is on the right barcode
                 armLevel = 2;
             }
             else{ // if the duck is on the barcode that the camera doesn't see
-                armLevel = 3;
+                armLevel = 1;
 
 
             }
@@ -186,21 +186,31 @@ public class AUTO_Barcode extends LinearOpMode {
             }
 
             //encoderdrive stuff goes here
-            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-
+            encoderDrive(DRIVE_SPEED,  6,  6, .0);  // S1: Forward 47 Inches with 5 Sec timeout
+            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+            encoderDrive(DRIVE_SPEED, 18, 18, 1.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, 6, -6, 2.0);  // S3: Reverse 24 Inches with 4 Sec timeout
             intakeLeft.setPower(-1);
-            intakeRight.setPower(-1);
+            intakeRight.setPower(1);
             sleep(2000);
             intakeLeft.setPower(0);
             intakeRight.setPower(0);
 
-            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
-            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
-            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//            //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+//            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//
+//            intakeLeft.setPower(-1);
+//            intakeRight.setPower(-1);
+//            sleep(2000);
+//            intakeLeft.setPower(0);
+//            intakeRight.setPower(0);
+//
+//            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+//            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+//            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+//            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
 
 
