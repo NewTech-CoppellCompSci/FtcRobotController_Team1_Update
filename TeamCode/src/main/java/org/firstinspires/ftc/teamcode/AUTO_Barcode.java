@@ -186,16 +186,24 @@ public class AUTO_Barcode extends LinearOpMode {
             }
 
             //encoderdrive stuff goes here
-            encoderDrive(DRIVE_SPEED,  6,  6, .0);  // S1: Forward 47 Inches with 5 Sec timeout
+            encoderDrive(DRIVE_SPEED,  6,  6, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
             wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
             wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
-            encoderDrive(DRIVE_SPEED, 18, 18, 1.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, 6, -6, 2.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, 6, 6, 5.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+            encoderDrive(DRIVE_SPEED, 6, 6, 5.0);  // S3: Reverse 24 Inches with 4 Sec timeoutt
             intakeLeft.setPower(-1);
             intakeRight.setPower(1);
             sleep(2000);
             intakeLeft.setPower(0);
             intakeRight.setPower(0);
+
+
+//            wheelFL.setDirection(DcMotorSimple.Direction.FORWARD);
+//       wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//wheelBL.setDirection(DcMotorSimple.Direction.FORWARD);
+// wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //            //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 //            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
@@ -318,6 +326,7 @@ armLevel = 0;
             wheelFR.setPower(Math.abs(speed));
             wheelBL.setPower(Math.abs(speed));
             wheelBR.setPower(Math.abs(speed));
+
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
