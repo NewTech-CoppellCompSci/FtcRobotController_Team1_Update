@@ -118,8 +118,8 @@ public class Auto_linear extends LinearOpMode {
         susanWheel = hardwareMap.get(DcMotorEx.class, "susanWheel");
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
 
-        sideBackDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
-        sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
+        sideBackDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "sideBackDistanceSensor");
+        sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "sideRightDistanceSensor");
 
         wheelFL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         wheelFR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
