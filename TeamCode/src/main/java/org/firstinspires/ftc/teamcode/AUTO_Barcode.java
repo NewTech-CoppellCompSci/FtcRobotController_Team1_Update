@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 
+        import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
         import com.qualcomm.robotcore.eventloop.opmode.Disabled;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -16,6 +17,7 @@ package org.firstinspires.ftc.teamcode;
         import java.util.List;
         import org.firstinspires.ftc.robotcore.external.ClassFactory;
         import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+        import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
         import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
         import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
         import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -59,6 +61,10 @@ public class AUTO_Barcode extends LinearOpMode {
     private DcMotorEx armSlide;
     private DcMotorEx intakeLeft;
     private DcMotorEx intakeRight;
+    private Rev2mDistanceSensor backDistanceSensor;
+    private Rev2mDistanceSensor rightDistanceSensor;
+    private Rev2mDistanceSensor leftDistanceSensor;
+    private double maxDriveTicsPerSec = 2000;
 
     private ElapsedTime runtime = new ElapsedTime();
     private int[] armLevelPosition = {0, 260, 650, 995};
@@ -66,7 +72,7 @@ public class AUTO_Barcode extends LinearOpMode {
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 3.78 ;     // For figuring circumference // change
+    static final double     WHEEL_DIAMETER_INCHES   = 4 ;     // For figuring circumference // change
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
@@ -116,7 +122,9 @@ public class AUTO_Barcode extends LinearOpMode {
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
         intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeLeft");
         intakeRight = hardwareMap.get(DcMotorEx.class, "intakeRight");
-
+        backDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceBack");
+        rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceRight");
+        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceLeft");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -133,6 +141,13 @@ public class AUTO_Barcode extends LinearOpMode {
         wheelBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //set wheel tolerance
+        //JMAC Copy
+        wheelFL.setTargetPositionTolerance(25);
+        wheelFR.setTargetPositionTolerance(25);
+        wheelBL.setTargetPositionTolerance(25);
+        wheelBR.setTargetPositionTolerance(25);
+
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
                 wheelFL.getCurrentPosition(),
@@ -140,6 +155,9 @@ public class AUTO_Barcode extends LinearOpMode {
                  wheelBL.getCurrentPosition(),
                 wheelBR.getCurrentPosition());
         telemetry.update();
+
+
+
 
         /**
          * Activate TensorFlow Object Detection before we wait for the start command.
@@ -154,79 +172,50 @@ public class AUTO_Barcode extends LinearOpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1.5, 16.0/9.0);
+            tfod.setZoom(1.5, 16.0 / 9.0);
         }
+
+        armLevel = 0;
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
+
         waitForStart();
 
+        detectDuck();
+
+        rout1();
+
+
+    }
+
+    public void detectDuck(){
+
+        int duckPos = 0;
+
         if (opModeIsActive()) {
-            if(getPosition()=="right") { //if duck is on the left barcode
-                armLevel = 3;
-
-
-            }
-            else if(getPosition() == "left"){ //if duck is on the right barcode
-                armLevel = 2;
-            }
-            else{ // if the duck is on the barcode that the camera doesn't see
+            if (getPosition() == "Left") { //if duck is on the left barcode
                 armLevel = 1;
+                duckPos = 1;
 
+            } else if (getPosition() == "Right") { //if duck is on the right barcode
+                armLevel = 2;
+                duckPos = 2;
+            } else { // if the duck is on the barcode that the camera doesn't see
+                armLevel = 3;
+                duckPos = 3;
 
             }
+            telemetry.addData("Duck Level: ", duckPos);
             armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            armSlide.setPower(0.7);
             armSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            while (armSlide.getCurrentPosition() == armLevelPosition[armLevel])
-            while (Math.abs(armLevelPosition[armLevel]-armSlide.getCurrentPosition())>20&&opModeIsActive())
-            {
+            armSlide.setPower(0.7);
+            while (Math.abs(armLevelPosition[armLevel] - armSlide.getCurrentPosition()) > 20 && opModeIsActive()) {
 //                armSlide.setVelocity(1500); //removed because
             }
 
-            //encoderdrive stuff goes here
-            encoderDrive(DRIVE_SPEED,  6,  6, .0);  // S1: Forward 47 Inches with 5 Sec timeout
-            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
-            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
-            encoderDrive(DRIVE_SPEED, 18, 18, 1.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, 6, -6, 2.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-            intakeLeft.setPower(-1);
-            intakeRight.setPower(1);
-            sleep(2000);
-            intakeLeft.setPower(0);
-            intakeRight.setPower(0);
-
-//            //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-//            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-//
-//            intakeLeft.setPower(-1);
-//            intakeRight.setPower(-1);
-//            sleep(2000);
-//            intakeLeft.setPower(0);
-//            intakeRight.setPower(0);
-//
-//            encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-//            encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-//            wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
-//            wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
-//            encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-
-
-
-///
-
-//paste outtake
         }
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-
-       // robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
-       // robot.rightClaw.setPosition(0.0);//not needed
-        //sleep(1000);     // pause for servos to move
-armLevel = 0;
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
     }
 
     /**
@@ -385,5 +374,205 @@ armLevel = 0;
             //  sleep(250);   // optional pause after each move
         }
     }
+
+
+    /*
+        you're mimicking the joystick controls
+        leftX = left stick x position -1 <= x <= 1
+        leftY = left stick y position -1 <= y <= 1
+        rightX = right stick x position -1 <= x <= 1
+        tics = max number of tics
+     */
+    public void drive(double leftX, double leftY, double rightX, int tics, String routDescription){
+
+        //switch x and y since the robot is sideways
+        double temp = leftX;
+        leftX = leftY;
+        leftY = -temp;
+
+        //reset all wheels to 0
+        wheelFL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelFR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Mimic controller input
+        double r = Math.hypot(leftY, leftX);
+        double robotAngle = Math.atan2(leftX, leftY) - Math.PI / 4;
+
+        //make calculations based upon the input
+        final double v1 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.sin(robotAngle) + rightX;
+        final double v4 = r * Math.cos(robotAngle) - rightX;
+
+        //set target position
+        wheelFL.setTargetPosition(v1 > 0 ? tics : - tics);
+        wheelFR.setTargetPosition(v2 > 0 ? tics : - tics);
+        wheelBL.setTargetPosition(v3 > 0 ? tics : - tics);
+        wheelBR.setTargetPosition(v4 > 0 ? tics : - tics);
+
+        //Set wheel encoder mode
+        wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelFR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelBL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        wheelBR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+        //set the velocity for each wheel
+        wheelFL.setVelocity(v1 * -1 * maxDriveTicsPerSec);
+        wheelFR.setVelocity(v2 * -1 * maxDriveTicsPerSec);
+        wheelBL.setVelocity(v3 * -1 * maxDriveTicsPerSec);
+        wheelBR.setVelocity(v4 * -1 * maxDriveTicsPerSec);
+
+        telemetry.addData("Task: ", routDescription);
+        telemetry.update();
+
+        while(wheelFL.isBusy() || wheelFR.isBusy()){}
+
+    }
+
+
+    /*
+        you're mimicking the joystick controls
+        leftX = left stick x position -1 <= x <= 1
+        leftY = left stick y position -1 <= y <= 1
+        rightX = right stick x position -1 <= x <= 1
+        tics = max number of tics
+     */
+    public void driveDistnce(double leftX, double leftY, double rightX, int sensorNum, int distance, String routDescription){
+        Rev2mDistanceSensor sensor;
+        switch (sensorNum)
+        {
+            case 1:
+                sensor = rightDistanceSensor;
+                break;
+            case 2:
+                sensor = leftDistanceSensor;
+                break;
+            case 3:
+                sensor = backDistanceSensor;
+                break;
+            default:
+                sensor = backDistanceSensor;
+
+        }
+        //switch x and y since the robot is sideways
+        double temp = leftX;
+        leftX = leftY;
+        leftY = -temp;
+
+        //reset all wheels to 0
+        wheelFL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelFR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Mimic controller input
+        double r = Math.hypot(leftY, leftX);
+        double robotAngle = Math.atan2(leftX, leftY) - Math.PI / 4;
+
+        //make calculations based upon the input
+        final double v1 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.sin(robotAngle) + rightX;
+        final double v4 = r * Math.cos(robotAngle) - rightX;
+
+        //Set wheel encoder mode
+        wheelFL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        wheelFR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        wheelBL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        wheelBR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        //set the velocity for each wheel
+        wheelFL.setVelocity(v1 * -1 * maxDriveTicsPerSec);
+        wheelFR.setVelocity(v2 * -1 * maxDriveTicsPerSec);
+        wheelBL.setVelocity(v3 * -1 * maxDriveTicsPerSec);
+        wheelBR.setVelocity(v4 * -1 * maxDriveTicsPerSec);
+
+        //add loop sensor timer
+        while (Math.abs(sensor.getDistance(DistanceUnit.CM) - distance) < 0.5){
+            telemetry.addData("Task: ", routDescription);
+            telemetry.addData("Distance: ", sensor.getDistance(DistanceUnit.CM));
+            telemetry.update();
+        }
+
+
+        wheelFL.setVelocity(0);
+        wheelFR.setVelocity(0);
+        wheelBL.setVelocity(0);
+        wheelBR.setVelocity(0);
+
+
+    }
+
+//    public void encoderDrive(){
+//        //encoderdrive stuff goes here
+//        encoderDrive(DRIVE_SPEED, 3, 3, 50.0);  // S1: Forward 47 Inches with 5 Sec timeout
+//        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        encoderDrive(DRIVE_SPEED, 3, 3, 10.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        encoderDrive(DRIVE_SPEED, 3, 3, 10.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//        intakeLeft.setPower(-1);
+//        intakeRight.setPower(1);
+//        sleep(2000);
+//        intakeLeft.setPower(0);
+//        intakeRight.setPower(0);
+//
+//        //removed for drivestcik encodinbg
+//
+//        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+//        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//
+//        intakeLeft.setPower(-1);
+//        intakeRight.setPower(-1);
+//        sleep(2000);
+//        intakeLeft.setPower(0);
+//        intakeRight.setPower(0);
+//
+//        encoderDrive(DRIVE_SPEED, 48, 48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+//        encoderDrive(TURN_SPEED, 12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+//        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+//
+//
+//        //paste outtake
+//
+//        // Step through each leg of the path,
+//        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+//
+//        // robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
+//        // robot.rightClaw.setPosition(0.0);//not needed
+//        //sleep(1000);     // pause for servos to move
+//    }
+
+
+
+    private void rout1() {
+
+        drive(0, 1, 0, 700, "Drive Forward");
+
+        drive(-1, 0, 0, 970, "Drive Left");
+
+        driveDistnce(0,1,0,3, 50, "Move to Hub");
+
+        intakeLeft.setPower(-1);
+        intakeRight.setPower(1);
+        sleep(2000);
+        intakeLeft.setPower(0);
+        intakeRight.setPower(0);
+
+        //drive(.5, .5, 0, 1000, "Forward Left");
+
+        //drive(0, 0, 1, 1000, "Spin Right");
+
+        // drive(.5, 0, .05, 1000, "curve");
+
+
+
+    }
+
 }
 //afdter all this set arm to 0 and then

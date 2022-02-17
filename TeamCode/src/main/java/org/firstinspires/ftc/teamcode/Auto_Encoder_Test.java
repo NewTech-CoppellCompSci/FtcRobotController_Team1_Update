@@ -75,7 +75,7 @@ public class Auto_Encoder_Test extends LinearOpMode
         max speed for the drive motors.
         I think max is 600
      */
-    private double maxDriveTicsPerSec = 5000;
+    private double maxDriveTicsPerSec = 2000;
 
 
     @Override
@@ -105,10 +105,11 @@ public class Auto_Encoder_Test extends LinearOpMode
         wheelBR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         // In RUN_USING_ENCODER mode, they all need to run in reverse
-        wheelFL.setDirection(DcMotorSimple.Direction.REVERSE);
-        wheelFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        wheelBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        wheelBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        //JMac Copy before you use drive method
+        wheelFL.setDirection(DcMotorSimple.Direction.FORWARD);
+        wheelFR.setDirection(DcMotorSimple.Direction.FORWARD);
+        wheelBL.setDirection(DcMotorSimple.Direction.FORWARD);
+        wheelBR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Set Encoder Tolerance
 //        wheelFL.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -122,11 +123,17 @@ public class Auto_Encoder_Test extends LinearOpMode
         wheelBL.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
         wheelBR.setVelocityPIDFCoefficients(1.17, 0.117, 0, 11.7);
 
+        //set wheel tolerance
+        //JMAC Copy
+        wheelFL.setTargetPositionTolerance(25);
+        wheelFR.setTargetPositionTolerance(25);
+        wheelBL.setTargetPositionTolerance(25);
+        wheelBR.setTargetPositionTolerance(25);
+
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
 
         waitForStart();
 
@@ -136,20 +143,21 @@ public class Auto_Encoder_Test extends LinearOpMode
 
     private void rout1(){
 
-        drive(0, 1, 0, 1000, "Drive Forward");
-        while(wheelFL.isBusy() || wheelFR.isBusy() || wheelBL.isBusy() || wheelBR.isBusy()){}
+        drive(0, 1, 0, 700, "Drive Forward");
 
-        drive(1, 0, 0, 1000, "Drive Right");
-        while(wheelFL.isBusy() || wheelFR.isBusy() || wheelBL.isBusy() || wheelBR.isBusy()){}
 
-        drive(.5, .5, 0, 1000, "Forward Left");
-        while(wheelFL.isBusy() || wheelFR.isBusy() || wheelBL.isBusy() || wheelBR.isBusy()){}
+        drive(-1, 0, 0, 970, "Drive Left");
 
-        drive(0, 0, 1, 1000, "Spin Right");
-        while(wheelFL.isBusy() || wheelFR.isBusy() || wheelBL.isBusy() || wheelBR.isBusy()){}
+        drive(0, 1, 0, 500, "Drive Forward");
 
-        drive(.5, .5, .05, 1000, "curve");
-        while(wheelFL.isBusy() || wheelFR.isBusy() || wheelBL.isBusy() || wheelBR.isBusy()){}
+
+
+        //drive(.5, .5, 0, 1000, "Forward Left");
+
+        //drive(0, 0, 1, 1000, "Spin Right");
+
+       // drive(.5, 0, .05, 1000, "curve");
+
 
     }
 
@@ -164,12 +172,13 @@ public class Auto_Encoder_Test extends LinearOpMode
         rightX = right stick x position -1 <= x <= 1
         tics = max number of tics
      */
+    //JMAC Copy
     public void drive(double leftX, double leftY, double rightX, int tics, String routDescription){
 
         //switch x and y since the robot is sideways
         double temp = leftX;
         leftX = leftY;
-        leftY = temp;
+        leftY = -temp;
 
         //reset all wheels to 0
         wheelFL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -178,8 +187,8 @@ public class Auto_Encoder_Test extends LinearOpMode
         wheelBR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         //Mimic controller input
-        double r = Math.hypot(leftX, leftY);
-        double robotAngle = Math.atan2(leftY, rightX) - Math.PI / 4;
+        double r = Math.hypot(leftY, leftX);
+        double robotAngle = Math.atan2(leftX, leftY) - Math.PI / 4;
 
         //make calculations based upon the input
         final double v1 = r * Math.cos(robotAngle) + rightX;
@@ -188,10 +197,10 @@ public class Auto_Encoder_Test extends LinearOpMode
         final double v4 = r * Math.cos(robotAngle) - rightX;
 
         //set target position
-        wheelFL.setTargetPosition(v1 > 0 ? (int) (tics * v1) : (int) (-1 * tics * v1));
-        wheelFR.setTargetPosition(v2 > 0 ? (int) (tics * v2) : (int) (-1 * tics * v2));
-        wheelBL.setTargetPosition(v3 > 0 ? (int) (tics * v3) : (int) (-1 * tics * v3));
-        wheelBR.setTargetPosition(v4 > 0 ? (int) (tics * v4) : (int) (-1 * tics * v4));
+        wheelFL.setTargetPosition(v1 > 0 ? tics : - tics);
+        wheelFR.setTargetPosition(v2 > 0 ? tics : - tics);
+        wheelBL.setTargetPosition(v3 > 0 ? tics : - tics);
+        wheelBR.setTargetPosition(v4 > 0 ? tics : - tics);
 
         //Set wheel encoder mode
         wheelFL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -207,6 +216,8 @@ public class Auto_Encoder_Test extends LinearOpMode
 
         telemetry.addData("Task: ", routDescription);
         telemetry.update();
+
+        while(wheelFL.isBusy() || wheelFR.isBusy()){}
 
     }
 
