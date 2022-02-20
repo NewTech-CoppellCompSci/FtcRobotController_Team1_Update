@@ -100,7 +100,7 @@ public class RED_Score_Park extends LinearOpMode {
         telemetry.addData("Tolerance: ", armSlide.getTargetPositionTolerance());
 
 
-        while (!isStopRequested() && opModeIsActive() && !isStarted()) {
+        while (!isStopRequested() && !isStarted()) {
             telemetry.addData("results", results);
             telemetry.update();
             results = pipeline.getAnalysis();

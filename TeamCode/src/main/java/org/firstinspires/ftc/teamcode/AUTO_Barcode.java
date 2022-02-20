@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 package org.firstinspires.ftc.teamcode;
 
 
@@ -378,7 +378,7 @@ armLevel = 0;
     }
 }
 //afdter all this set arm to 0 and then
-=======
+
 //package org.firstinspires.ftc.teamcode;
 //
 //
@@ -959,4 +959,4 @@ armLevel = 0;
 //
 //}
 ////afdter all this set arm to 0 and then
->>>>>>> Stashed changes
+
