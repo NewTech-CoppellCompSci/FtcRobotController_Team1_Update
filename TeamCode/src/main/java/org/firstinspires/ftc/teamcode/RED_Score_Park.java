@@ -184,7 +184,7 @@ public class RED_Score_Park extends LinearOpMode {
 
     private void route1() {
 
-        drive(0, 1, 0, 700, "Drive Forward");
+        drive(0, 2, 0, 700, "Drive Forward");
 
         drive(-1, 0, 0, 970, "Drive Left");
 

@@ -330,10 +330,10 @@ public class Controller extends OpMode {
             //gamepad2.rumble(1000);
             // }
             // else{
-            if (gamepad2.left_bumper|| gamepad1.left_bumper) {
+            if (gamepad2.left_bumper) {
                 intakeLeft.setPower(1);
                 intakeRight.setPower(1);
-            } else if (gamepad2.right_bumper|| gamepad1.right_bumper) {
+            } else if (gamepad2.right_bumper) {
                 intakeLeft.setPower(-1);
                 intakeRight.setPower(-1);
             } else {
@@ -344,19 +344,29 @@ public class Controller extends OpMode {
 
         private void susanControl() {
             if (gamepad1.dpad_left || gamepad2.dpad_left) {
-                susanWheel.setVelocity(400);
+                susanWheel.setVelocity(945);
                 telemetry.addData("Status", "dpad left");
             } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-                susanWheel.setVelocity(-400);
+                susanWheel.setVelocity(-945);
                 telemetry.addData("Status", "bumper right");
             } else {
                 susanWheel.setVelocity(0);
                 //susanWheel.setPower(0);  //disabled to stop conteractingg
 
+                if (gamepad1.left_bumper) {
+                    susanWheel.setVelocity(6000);
+                    telemetry.addData("Status", "dpad left");
+                } else if (gamepad1.right_bumper) {
+                    susanWheel.setVelocity(-6000);
+                    telemetry.addData("Status", "bumper right");
+                } else {
+                    susanWheel.setVelocity(0);
 
 
+                }
             }
         }
+
 
         private void forkliftControl(){
 
