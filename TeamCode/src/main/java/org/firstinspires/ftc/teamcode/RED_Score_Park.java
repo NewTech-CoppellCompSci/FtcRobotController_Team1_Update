@@ -129,7 +129,7 @@ public class RED_Score_Park extends LinearOpMode {
                 break;
             //do everything for 3
         }
-        route1();
+        rout1();
         sleep(500);
     }
 
@@ -182,11 +182,26 @@ public class RED_Score_Park extends LinearOpMode {
 
     }
 
-    private void route1() {
+    private void rout1() {
 
-        drive(0, 2, 0, 700, "Drive Forward");
+        drive(0, 1, 0, 700, "Drive Forward");
+
+
 
         drive(-1, 0, 0, 970, "Drive Left");
+
+
+
+        drive(0, 1, 0, 500, "Drive Forward");
+
+//        drive(.5, .5, 0, 1000, "Forward Left");
+//
+//        drive(0, 0, 1, 1000, "Spin Right");
+//
+//        drive(.5, 0, .05, 1000, "curve");
+
+
+
 
 
         intakeLeft.setPower(-1);
@@ -194,6 +209,8 @@ public class RED_Score_Park extends LinearOpMode {
         sleep(2000);
         intakeLeft.setPower(0);
         intakeRight.setPower(0);
+
+
 
         armLevel = 1;
 
