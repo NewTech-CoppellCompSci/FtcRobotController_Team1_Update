@@ -56,7 +56,7 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
 
         //trajectory0
         TrajectorySequence Trajectory0 = drive.trajectorySequenceBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(8, -42, Math.toRadians(0))) //move to storage tower thing
+                .lineToSplineHeading(new Pose2d(0, -40, Math.toRadians(0))) //move to storage tower thing
                 //.splineTo(new Vector2d(16, -64), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
                     Lift.setTargetPosition(LowL);
@@ -71,8 +71,8 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(0))
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(0))//Lower lift
-                .lineToLinearHeading(new Pose2d(10, -45, Math.toRadians(0))) //First move and turn to warehouse
-                .splineTo(new Vector2d(60, -45), Math.toRadians(0)) //Second move moving straight in warehouse
+                .lineToLinearHeading(new Pose2d(10, -65, Math.toRadians(0))) //First move and turn to warehouse
+                .splineTo(new Vector2d(60, -65), Math.toRadians(0)) //Second move moving straight in warehouse
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(DownL)) //Lower lift
                 .build();
@@ -138,10 +138,10 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
                 drive.followTrajectorySequence(Trajectory0);
                 break;
             case 2:
-                drive.followTrajectorySequence(Trajectory1);
+                drive.followTrajectorySequence(Trajectory1); //change back to 1
                 break;
             case 3:
-                drive.followTrajectorySequence(Trajectory2);
+                drive.followTrajectorySequence(Trajectory2); //change back to 2
                 break;
         }
         while (opModeIsActive()) {
