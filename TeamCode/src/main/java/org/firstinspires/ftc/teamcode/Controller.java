@@ -33,6 +33,7 @@ import com.qualcomm.hardware.motors.RevRoboticsCoreHexMotor;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -40,6 +41,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import java.util.Arrays;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -50,10 +52,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * The names of OpModes appear on the menu of the FTC Driver Station.
  * When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all iterative OpModes contain.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
@@ -64,7 +66,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
     name = the name that will display on the Driver Hub
     group = allows you to group OpModes
  */
-@TeleOp(name="DriverControl_Pressme;)", group="Wesley")
+@TeleOp(name = "DriverControl_Pressme;)", group = "Wesley")
 //@Disabled  This way it will run on the robot
 public class Controller extends OpMode {
     // Declare OpMode members.
@@ -91,6 +93,9 @@ public class Controller extends OpMode {
     private DcMotorEx armSlide;
     private DcMotorEx intakeLeft;
     private DcMotorEx intakeRight;
+    private CRServo Outin;
+    private CRServo leftright;
+    private CRServo updown;
 
     //Servos
     //private Servo gripper;
@@ -128,6 +133,10 @@ public class Controller extends OpMode {
         armSlide = hardwareMap.get(DcMotorEx.class, "armSlide");
         intakeLeft = hardwareMap.get(DcMotorEx.class, "intakeLeft");
         intakeRight = hardwareMap.get(DcMotorEx.class, " intakeRight");
+        Outin = hardwareMap.get(CRServo.class, " in1");
+        leftright = hardwareMap.get(CRServo.class, " in2");
+        updown = hardwareMap.get(CRServo.class, " in3");
+
 
         //Touch Sensors
         //intakeSensor = hardwareMap.get(DigitalChannel.class, "intakeTouchSensor");
@@ -139,7 +148,7 @@ public class Controller extends OpMode {
         //Servos
         //gripper = hardwareMap.get(Servo.class, "gripperServo");
 
-       // sideLeftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
+        // sideLeftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideLeft");
         //sideRightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distanceSideRight");
         /*
             Set up motors so they run without the encoders
@@ -232,6 +241,7 @@ public class Controller extends OpMode {
         intakeControl();
         susanControl();
         forkliftControl();
+        tapething();
 
 
         /*
@@ -253,168 +263,192 @@ public class Controller extends OpMode {
 //        }
 
 
-            //Gripper Data
+        //Gripper Data
 
 
+        telemetry.addData("Left Trigger Position", gamepad1.left_trigger);
 
 
-            telemetry.addData("Left Trigger Position", gamepad1.left_trigger);
+        //Arm Slide Data
+        telemetry.addData("velocity", armSlide.getVelocity());
+        telemetry.addData("slidePosition", armSlide.getCurrentPosition());
+        telemetry.addData("is at target", !armSlide.isBusy());
+        //Arm Slide Data
+        telemetry.addData("Target Slide Position", armLevelPosition[armLevel]);
+        telemetry.addData("Slide Position", armSlide.getCurrentPosition());
+        telemetry.addData("Velocity", armSlide.getVelocity());
+        telemetry.addData("is at target", !armSlide.isBusy());
+        telemetry.addData("Tolerance: ", armSlide.getTargetPositionTolerance());
 
-
-            //Arm Slide Data
-            telemetry.addData("velocity", armSlide.getVelocity());
-            telemetry.addData("slidePosition", armSlide.getCurrentPosition());
-            telemetry.addData("is at target", !armSlide.isBusy());
-            //Arm Slide Data
-            telemetry.addData("Target Slide Position", armLevelPosition[armLevel]);
-            telemetry.addData("Slide Position", armSlide.getCurrentPosition());
-            telemetry.addData("Velocity", armSlide.getVelocity());
-            telemetry.addData("is at target", !armSlide.isBusy());
-            telemetry.addData("Tolerance: ", armSlide.getTargetPositionTolerance());
-
-            // Show the elapsed game time and power for each wheel.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Motors", "wheelFL (%.2f), front right (%.2f), back left (%.2f),  right (%.2f)", wheelFL, wheelFR, wheelBL, wheelBR);
+        // Show the elapsed game time and power for each wheel.
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        //telemetry.addData("Motors", "wheelFL (%.2f), front right (%.2f), back left (%.2f),  right (%.2f)", wheelFL, wheelFR, wheelBL, wheelBR);
 
 //        telemetry.addData("range", String.format("%.3f cm", sideDistanceSensor.getDistance(DistanceUnit.CM)));
 //        telemetry.addData("range edited", sideDistanceSensor.getDistance(DistanceUnit.CM));
 
-            telemetry.update();
-        }
+        telemetry.update();
+    }
 
 
-        public void precisionControl(){
-            if (gamepad1.left_trigger > 0) {
-                //removed || gamepad2.left_trigger > 0)
-                speedMod = .25;
-                gamepad1.rumble(100);
-                gamepad2.rumble(100);
-            } else if (gamepad1.right_trigger > 0) {
-                //removed || gamepad2.right_trigger > 0
-                speedMod = 0.5;
-                gamepad1.rumble(.5, .5, 1000);
-                gamepad2.rumble(.5, .5, 1000);
+    public void precisionControl() {
+        if (gamepad1.left_trigger > 0) {
+            //removed || gamepad2.left_trigger > 0)
+            speedMod = .25;
+            gamepad1.rumble(100);
+            gamepad2.rumble(100);
+        } else if (gamepad1.right_trigger > 0) {
+            //removed || gamepad2.right_trigger > 0
+            speedMod = 0.5;
+            gamepad1.rumble(.5, .5, 1000);
+            gamepad2.rumble(.5, .5, 1000);
 
-            } else {
-                speedMod = 1;
+        } else {
+            speedMod = 1;
 //            gamepad1.stopRumble();
 //            gamepad2.stopRumble();
 
-            }
         }
+    }
 
-        public void drivingControl(){
-            //gets controller input
-            double r = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
+    public void drivingControl() {
+        //gets controller input
+        double r = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
 
-            //make calculations based upon the input
-            double robotAngle = Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
-            double rightX = -gamepad1.right_stick_x;
-            rotation += 1 * rightX;
-            final double v1 = r * Math.cos(robotAngle) - rightX;
-            final double v2 = r * Math.sin(robotAngle) + rightX;
-            final double v3 = r * Math.sin(robotAngle) - rightX;
-            final double v4 = r * Math.cos(robotAngle) + rightX;
+        //make calculations based upon the input
+        double robotAngle = Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+        double rightX = -gamepad1.right_stick_x;
+        rotation += 1 * rightX;
+        final double v1 = r * Math.cos(robotAngle) - rightX;
+        final double v2 = r * Math.sin(robotAngle) + rightX;
+        final double v3 = r * Math.sin(robotAngle) - rightX;
+        final double v4 = r * Math.cos(robotAngle) + rightX;
 
-            //change the power for each wheel
-            wheelFL.setPower(-v1 * speedMod);
-            wheelFR.setPower(-v2 * speedMod);
-            wheelBL.setPower(v3 * speedMod);
-            wheelBR.setPower(v4 * speedMod);
-        }
+        //change the power for each wheel
+        wheelFL.setPower(-v1 * speedMod);
+        wheelFR.setPower(-v2 * speedMod);
+        wheelBL.setPower(v3 * speedMod);
+        wheelBR.setPower(v4 * speedMod);
+    }
 
-        public void intakeControl(){
-            // if (intakeSensor.getState()) {
+    public void intakeControl() {
+        // if (intakeSensor.getState()) {
+        intakeLeft.setPower(0);
+        intakeRight.setPower(0);
+        //gamepad2.rumble(1000);
+        // }
+        // else{
+        if (gamepad2.left_bumper) {
+            intakeLeft.setPower(1);
+            intakeRight.setPower(1);
+        } else if (gamepad2.right_bumper) {
+            intakeLeft.setPower(-1);
+            intakeRight.setPower(-1);
+        } else {
             intakeLeft.setPower(0);
             intakeRight.setPower(0);
-            //gamepad2.rumble(1000);
-            // }
-            // else{
-            if (gamepad2.left_bumper) {
-                intakeLeft.setPower(1);
-                intakeRight.setPower(1);
-            } else if (gamepad2.right_bumper) {
-                intakeLeft.setPower(-1);
-                intakeRight.setPower(-1);
-            } else {
-                intakeLeft.setPower(0);
-                intakeRight.setPower(0);
-            }
+        }
+    }
+
+    private void susanControl() {
+//            if (gamepad1.dpad_left || gamepad2.dpad_left) {
+//                susanWheel.setVelocity(945);
+//                telemetry.addData("Status", "dpad left");
+//            } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
+//                susanWheel.setVelocity(-945);
+//                telemetry.addData("Status", "bumper right");
+//            } else {
+//                susanWheel.setVelocity(0);
+//                //susanWheel.setPower(0);  //disabled to stop conteractingg
+//
+//                if (gamepad1.left_bumper) {
+//                    susanWheel.setVelocity(6000);
+//                    telemetry.addData("Status", "dpad left");
+//                } else if (gamepad1.right_bumper) {
+//                    susanWheel.setVelocity(-6000);
+//                    telemetry.addData("Status", "bumper right");
+//                } else {
+//                    susanWheel.setVelocity(0);
+
+
+        if (gamepad1.dpad_left || gamepad2.dpad_left) {
+            susanWheel.setPower(susanWheel.getPower() + 0.01);
+            telemetry.addData("Status", "dpad left");
+        } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
+            susanWheel.setPower(susanWheel.getPower() - 0.01);
+            telemetry.addData("Status", "bumper right");
+        } else {
+            susanWheel.setPower(0);  //disabled to stop conteractingg
+
+
         }
 
-        private void susanControl() {
-            if (gamepad1.dpad_left || gamepad2.dpad_left) {
-                susanWheel.setVelocity(945);
-                telemetry.addData("Status", "dpad left");
-            } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-                susanWheel.setVelocity(-945);
-                telemetry.addData("Status", "bumper right");
-            } else {
-                susanWheel.setVelocity(0);
-                //susanWheel.setPower(0);  //disabled to stop conteractingg
-
-                if (gamepad1.left_bumper) {
-                    susanWheel.setVelocity(6000);
-                    telemetry.addData("Status", "dpad left");
-                } else if (gamepad1.right_bumper) {
-                    susanWheel.setVelocity(-6000);
-                    telemetry.addData("Status", "bumper right");
-                } else {
-                    susanWheel.setVelocity(0);
+    }
 
 
-                }
-            }
+    private void forkliftControl() {
+
+        if ((gamepad1.dpad_up || gamepad2.dpad_up) && (armLevel < armLevelPosition.length - 1) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
+            rumbleLevel = true;
+            previousRunTime = getRuntime();
+            armLevel++;
+        }
+        if ((gamepad1.dpad_down || gamepad2.dpad_down) && (armLevel > 0) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
+            rumbleLevel = true;
+            previousRunTime = getRuntime();
+            armLevel--;
+
+
         }
 
-
-        private void forkliftControl(){
-
-            if ((gamepad1.dpad_up || gamepad2.dpad_up) && (armLevel < armLevelPosition.length - 1) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
-                rumbleLevel = true;
-                previousRunTime = getRuntime();
-                armLevel++;
-            }
-            if ((gamepad1.dpad_down || gamepad2.dpad_down) && (armLevel > 0) && (getRuntime() - previousRunTime >= inputDelayInSeconds)) {
-                rumbleLevel = true;
-                previousRunTime = getRuntime();
-                armLevel--;
-
-
-
-            }
-
-            //sets to driving level
-            if (gamepad1.y || gamepad2.y) {
-                armLevel=1;
-            }
-
-            armSlide.setVelocity(1000);
-            if (armLevel==1) {
-                armSlide.setVelocity(2000);
-                //if statement to set speed only going down
-            }
-
-            if (getRuntime() - previousRunTime >= inputDelayInSeconds + .25 && rumbleLevel) {
-                rumbleLevel = false;
-            }
-            armSlide.setTargetPosition(armLevelPosition[armLevel]);
-            armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
-            
+        //sets to driving level
+        if (gamepad1.y || gamepad2.y) {
+            armLevel = 1;
         }
 
-        /*
-         * Code to run ONCE after the driver hits STOP
-         */
+        armSlide.setVelocity(1000);
+        if (armLevel == 1) {
+            armSlide.setVelocity(2000);
+            //if statement to set speed only going down
+        }
 
-        /*
-         * Code to run ONCE after the driver hits STOP
-         */
+        if (getRuntime() - previousRunTime >= inputDelayInSeconds + .25 && rumbleLevel) {
+            rumbleLevel = false;
+        }
+        armSlide.setTargetPosition(armLevelPosition[armLevel]);
+        armSlide.setTargetPositionTolerance(armLevelPosition[armLevel]);
+
+    }
+
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+
+    private void tapething() {
 
 
+        updown.setPower(gamepad2.left_stick_y); //may need to put - in front if directin is flipped
+        leftright.setPower(gamepad2.right_stick_x);
+        Outin.setPower(-gamepad2.left_trigger + gamepad2.right_trigger); //change the plus and - around if direction is flipped
+
+
+    }
+
+    public static void wait(int ms) {
+        try {
+            Thread.sleep(ms); //core java delay command
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt(); //this exception is useful to remove the glitches and errors of the thread.sleep()
+        }
+    }
 
     //@Override
-    void Stop(){
+    void Stop() {
         armSlide.setTargetPosition(0);
     }
+
 }
