@@ -64,7 +64,7 @@ public class Gobiidae {
          * If you want to enlarge or reduce the size of the regions, it should be done here.
          */
         static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(250, 110);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(10, 110);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(100, 110);
         static final int REGION_WIDTH = 40;
         static final int REGION_HEIGHT = 40;
 
