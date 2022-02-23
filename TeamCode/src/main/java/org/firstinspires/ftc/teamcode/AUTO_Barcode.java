@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
+@Disabled
 @Autonomous(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
 //@Disabled
 public class AUTO_Barcode extends LinearOpMode {

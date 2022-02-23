@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-
+@Disabled
 @Autonomous(name = "Auto Red Park", group = "Jackson")
 //@Disabled
 public class AutoRedPark extends OpMode {
