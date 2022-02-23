@@ -43,8 +43,7 @@ public class blueWarehouseTrajectorySaianshOneMove extends LinearOpMode {
                     Lift.setTargetPosition(LowL);
                     Lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     ((DcMotorEx) Lift).setVelocity(liftVelo);
-                    Lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                }) //Raise lift to top position
+                    Lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); }) //Raise lift to top position
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(DownL)) //Lower lift
                 .build();

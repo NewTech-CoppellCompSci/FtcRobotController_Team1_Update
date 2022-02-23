@@ -54,7 +54,7 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
 
         //trajectory0
         TrajectorySequence Trajectory0 = drive.trajectorySequenceBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(-10, -42, Math.toRadians(0))) //move to storage tower thing
+                .lineToSplineHeading(new Pose2d(-10, -40, Math.toRadians(0))) //move to storage tower thing
                 //.splineTo(new Vector2d(16, -64), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
                     Lift.setTargetPosition(LowL);
@@ -63,8 +63,8 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
                     Lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }) //Raise lift to top position
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(1))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(-1))//Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> IntakeRight.setPower(1))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> IntakeLeft.setPower(-1))//Lower lift
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(LowL)) //Lower lift
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(0))
@@ -78,7 +78,7 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
 
         //Trajectory1
         TrajectorySequence Trajectory1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(-10, -42, Math.toRadians(0))) //move to storage tower thing
+                .lineToSplineHeading(new Pose2d(-10, -40, Math.toRadians(0))) //move to storage tower thing
                 //.splineTo(new Vector2d(16, -64), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
                     Lift.setTargetPosition(LowL);
@@ -89,12 +89,12 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> Lift.setTargetPosition(MidL)) //Lower lift
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(1))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(-1))//Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> IntakeRight.setPower(1))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> IntakeLeft.setPower(-1))//Lower lift
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(LowL)) //Lower lift
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(0))//Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> IntakeRight.setPower(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> IntakeLeft.setPower(0))//Lower lift
                 .lineToLinearHeading(new Pose2d(10, -66, Math.toRadians(0))) //First move and turn to warehouse
                 .splineTo(new Vector2d(40, -66), Math.toRadians(0))//Second move moving straight in warehouse
                 .lineToSplineHeading(new Pose2d(40, -40, Math.toRadians(0)))
@@ -104,7 +104,7 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
 
         //Trajectory2
         TrajectorySequence Trajectory2 = drive.trajectorySequenceBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(-10, -42, Math.toRadians(0))) //move to storage tower thing
+                .lineToSplineHeading(new Pose2d(-10, -40, Math.toRadians(0))) //move to storage tower thing
                 //.splineTo(new Vector2d(16, -64), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
                     Lift.setTargetPosition(LowL);
@@ -115,12 +115,12 @@ public class RedWarehouseTrajectorySaiansh extends LinearOpMode {
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> Lift.setTargetPosition(TopL)) //Lower lift
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(1))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(-1))//Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> IntakeRight.setPower(1))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> IntakeLeft.setPower(-1))//Lower lift
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(LowL)) //Lower lift
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(0))//Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> IntakeRight.setPower(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> IntakeLeft.setPower(0))//Lower lift
                 .lineToLinearHeading(new Pose2d(10, -66, Math.toRadians(0))) //First move and turn to warehouse
                 .splineTo(new Vector2d(40, -66), Math.toRadians(0))//Second move moving straight in warehouse
                 .lineToSplineHeading(new Pose2d(40, -40, Math.toRadians(0)))
