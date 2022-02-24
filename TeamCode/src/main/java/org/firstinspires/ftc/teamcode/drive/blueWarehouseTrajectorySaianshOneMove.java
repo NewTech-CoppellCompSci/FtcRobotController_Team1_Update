@@ -37,13 +37,9 @@ public class blueWarehouseTrajectorySaianshOneMove extends LinearOpMode {
 
         //trajectory0
         TrajectorySequence Trajectory0 = drive.trajectorySequenceBuilder(startPose)
+                .waitSeconds(2)
                 .lineToSplineHeading(new Pose2d(40, 66, Math.toRadians(180))) //move to storage tower thing
                 //.splineTo(new Vector2d(16, -64), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(-1, () -> {
-                    Lift.setTargetPosition(LowL);
-                    Lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    ((DcMotorEx) Lift).setVelocity(liftVelo);
-                    Lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); }) //Raise lift to top position
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(DownL)) //Lower lift
                 .build();
@@ -51,6 +47,10 @@ public class blueWarehouseTrajectorySaianshOneMove extends LinearOpMode {
 
         waitForStart();
         if(!isStopRequested())
+            Lift.setTargetPosition(LowL);
+            Lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ((DcMotorEx) Lift).setVelocity(liftVelo);
+            Lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             drive.followTrajectorySequence(Trajectory0);
     }
     }

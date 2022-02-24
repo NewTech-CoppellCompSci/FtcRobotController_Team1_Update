@@ -20,7 +20,7 @@ public class blueWarehouseTrajectorySaiansh extends LinearOpMode {
 
 
     public static double intaking = 1;
-    public static int liftVelo = 1500;
+    public static int liftVelo = 2000;
     public static int TopL = 995;
     public static int MidL = 650;
     public static int LowL = 260;
@@ -117,15 +117,17 @@ public class blueWarehouseTrajectorySaiansh extends LinearOpMode {
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> Lift.setTargetPosition(TopL)) //Lower lift
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(1))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(-1))//Lower lift
-                .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(LowL)) //Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(1.5, () -> IntakeRight.setPower(1))
+                .UNSTABLE_addTemporalMarkerOffset(1.5, () -> IntakeLeft.setPower(-1))//Lower lift
+                .UNSTABLE_addTemporalMarkerOffset(2.5, () -> Lift.setTargetPosition(LowL)) //Lower lift
                 .waitSeconds(0.25)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeRight.setPower(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> IntakeLeft.setPower(0))//Lower lift
-                .lineToLinearHeading(new Pose2d(10, 66, Math.toRadians(180))) //First move and turn to warehouse
-                .splineTo(new Vector2d(40, 66), Math.toRadians(180)) //Second move moving straight in warehouse
-                .lineToSplineHeading(new Pose2d(40, 40, Math.toRadians(180)))
+                .UNSTABLE_addTemporalMarkerOffset(2.5, () -> IntakeRight.setPower(0))
+                .UNSTABLE_addTemporalMarkerOffset(2.5, () -> IntakeLeft.setPower(0))//Lower lift
+                .strafeLeft(8)//tune with field testing
+                .forward(48)
+                //.lineToLinearHeading(new Pose2d(10, 66, Math.toRadians(180))) //First move and turn to warehouse
+                //.splineTo(new Vector2d(40, 66), Math.toRadians(180)) //Second move moving straight in warehouse
+                //.lineToSplineHeading(new Pose2d(40, 40, Math.toRadians(180)))
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(1.5, () -> Lift.setTargetPosition(DownL)) //Lower lift
                 .build();
