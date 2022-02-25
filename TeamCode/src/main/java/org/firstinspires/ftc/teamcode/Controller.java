@@ -372,10 +372,10 @@ public class Controller extends OpMode {
 
 
         if (gamepad1.dpad_left || gamepad2.dpad_left) {
-            susanWheel.setPower(susanWheel.getPower() + 0.01);
+            susanWheel.setPower(susanWheel.getPower() + 0.007);
             telemetry.addData("Status", "dpad left");
         } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-            susanWheel.setPower(susanWheel.getPower() - 0.01);
+            susanWheel.setPower(susanWheel.getPower() - 0.007);
             telemetry.addData("Status", "bumper right");
         } else {
             susanWheel.setPower(0);  //disabled to stop conteractingg
@@ -431,9 +431,31 @@ public class Controller extends OpMode {
     private void tapething() {
 
 
-        updown.setPower(gamepad2.left_stick_y); //may need to put - in front if directin is flipped
-        leftright.setPower(gamepad2.right_stick_x);
+        updown.setPower(gamepad2.left_stick_y *.5); //may need to put - in front if directin is flipped
+        leftright.setPower(gamepad2.left_stick_x *.5);
         Outin.setPower(-gamepad2.left_trigger + gamepad2.right_trigger); //change the plus and - around if direction is flipped
+
+
+
+
+
+//        if (gamepad2.left_stick_y > .1) ;
+//        updown.setPower(.5);
+//
+//
+//        if (gamepad2.left_stick_x > .1) ;
+//        leftright.setPower(.5);
+//
+//        Outin.setPower(-gamepad2.left_trigger + gamepad2.right_trigger);
+
+
+//        if (gamepad2.left_stick_y < .5) {
+//            updown.setPower(1);
+//        } else
+//            updown.setPower(0);
+//
+//
+//        }
 
 
     }
