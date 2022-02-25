@@ -101,15 +101,21 @@ public class brojg extends LinearOpMode {
                 .build());
         ((DcMotorEx) Lift).setVelocity(liftVelo);
         Lift.setTargetPosition(level == 1 ? LowL : level == 2 ? MidL : TopL);
-        sleep(1500);
+        drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
+                .strafeLeft(5)
+                .build());
+        sleep(3000);
         autoReleaseFreight();
     }
 
     private void warehousePark(){
         ((DcMotorEx) Lift).setVelocity(1000);
+        drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
+                .strafeRight(10)
+                .build());
         Lift.setTargetPosition(LowL);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
-                .forward(72)
+                .forward(69)
                 .build());
         ((DcMotorEx) Lift).setVelocity(liftVelo);
         Lift.setTargetPosition(DownL);
