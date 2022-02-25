@@ -431,8 +431,8 @@ public class Controller extends OpMode {
     private void tapething() {
 
 
-        updown.setPower(gamepad2.left_stick_y *.5); //may need to put - in front if directin is flipped
-        leftright.setPower(gamepad2.left_stick_x *.5);
+        updown.setPower(gamepad2.left_stick_y *.25); //may need to put - in front if directin is flipped
+        leftright.setPower(gamepad2.right_stick_x *.15);
         Outin.setPower(-gamepad2.left_trigger + gamepad2.right_trigger); //change the plus and - around if direction is flipped
 
 

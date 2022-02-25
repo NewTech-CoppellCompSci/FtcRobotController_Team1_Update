@@ -97,12 +97,13 @@ public class brojg extends LinearOpMode {
 
     private void scoreFreight(){
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
-                .lineToSplineHeading(new Pose2d(-10, -40, Math.toRadians(0))) //move to storage tower thing
+                .lineToSplineHeading(new Pose2d(-10, -42, Math.toRadians(0))) //move to storage tower thing
                 .build());
         ((DcMotorEx) Lift).setVelocity(liftVelo);
         Lift.setTargetPosition(level == 1 ? LowL : level == 2 ? MidL : TopL);
+        sleep(2000);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
-                .strafeLeft(5)
+                .strafeLeft(9)
                 .build());
         sleep(3000);
         autoReleaseFreight();
