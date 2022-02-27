@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.objectstuffforwebcam.Gobiidae;
 
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-
+@Disabled
 @Autonomous(name = "heyydaddy`", group = "Trajectory", preselectTeleOp = "DriverControl_Pressme;")
 public class heydaddy extends LinearOpMode {
 

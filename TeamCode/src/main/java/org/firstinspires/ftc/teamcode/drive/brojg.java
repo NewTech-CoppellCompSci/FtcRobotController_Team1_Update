@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.objectstuffforwebcam.Gobiidae;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
-@Autonomous(name = "thisonejack", group = "Trajectory", preselectTeleOp = "DriverControl_Pressme;")
+@Autonomous(name = "redright", group = "Trajectory", preselectTeleOp = "DriverControl_Pressme;")
 public class brojg extends LinearOpMode {
 
     private DcMotor Lift;
@@ -52,8 +53,7 @@ public class brojg extends LinearOpMode {
         LowL = ZERO_POSITION+260;
         DownL = ZERO_POSITION;
 
-        ((DcMotorEx) Lift).setVelocity(liftVelo);
-        Lift.setTargetPosition(LowL);
+
 
         IntakeLeft = hardwareMap.get(DcMotor.class, "intakeLeft");
         IntakeRight = hardwareMap.get(DcMotor.class, "intakeRight");
@@ -74,6 +74,8 @@ public class brojg extends LinearOpMode {
         }
 
         waitForStart();
+        ((DcMotorEx) Lift).setVelocity(liftVelo);
+        Lift.setTargetPosition(LowL);
 
         detection();
         scoreFreight();
@@ -103,7 +105,7 @@ public class brojg extends LinearOpMode {
         Lift.setTargetPosition(level == 1 ? LowL : level == 2 ? MidL : TopL);
         sleep(2000);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
-                .strafeLeft(9)
+                .strafeLeft(6)
                 .build());
         sleep(3000);
         autoReleaseFreight();
