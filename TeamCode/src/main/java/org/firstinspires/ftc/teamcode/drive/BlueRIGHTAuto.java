@@ -118,7 +118,7 @@ public class BlueRIGHTAuto extends LinearOpMode {
                 .build());
         Lift.setTargetPosition(LowL);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
-                .forward(-68'')
+                .forward(-68)
                 .build());
         ((DcMotorEx) Lift).setVelocity(liftVelo);
         Lift.setTargetPosition(DownL);
